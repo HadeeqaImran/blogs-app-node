@@ -30,3 +30,5 @@ In redis you  can only store numbers and strings, no js objects allowed so the f
 Using redis for caching db query results
 Key(query) -> Value(result of query)
 query keys should be consistent but unique between executions. e.g if two users retrieve a list of their blog posts then they will be running the same query bit their results should be different that is, both results need to have separate instances in the redis cache.
+
+Yes I trust the author
