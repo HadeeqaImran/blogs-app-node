@@ -1,8 +1,14 @@
+// module.exports = {
+//   googleClientID:
+//     '245982318824-r41o0sm7tv3u5dc8iicd4skc553283ia.apps.googleusercontent.com',
+//   googleClientSecret: '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',
+//   mongoURI: 'mongodb+srv://hadeeqaimran:hadeeqa@cluster1.9ahkh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster1',
+//   cookieKey: '123123123'
+// };
+
 module.exports = {
-  googleClientID:
-    "70265989829-0t7m7ce5crs6scqd3t0t6g7pv83ncaii.apps.googleusercontent.com",
-  googleClientSecret: "8mkniDQOqacXtlRD3gA4n2az",
-  mongoURI:
-    "mongodb+srv://readonly:0Wc2It8kdXQ8INbh@cluster0.ffbere1.mongodb.net/advnode?retryWrites=true&w=majority",
-  cookieKey: "123123123",
+  googleClientID: '245982318824-r41o0sm7tv3u5dc8iicd4skc553283ia.apps.googleusercontent.com',
+  googleClientSecret: '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',
+  mongoURI: 'mongodb+srv://hadeeqaimran:hadeeqa@cluster1.9ahkh.mongodb.net/blogs?retryWrites=true&w=majority',
+  cookieKey: '123123123'
 };

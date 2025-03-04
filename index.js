@@ -5,15 +5,13 @@ const passport = require('passport');
 const bodyParser = require('body-parser');
 const keys = require('./config/keys');
 
+require('./services/cache');
 require('./models/User');
 require('./models/Blog');
 require('./services/passport');
 
 mongoose.Promise = global.Promise;
-mongoose.connect(keys.mongoURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(keys.mongoURI, { useMongoClient: true });
 
 const app = express();
 
@@ -21,7 +19,7 @@ app.use(bodyParser.json());
 app.use(
   cookieSession({
     maxAge: 30 * 24 * 60 * 60 * 1000,
-    keys: [keys.cookieKey],
+    keys: [keys.cookieKey]
   })
 );
 app.use(passport.initialize());
@@ -30,7 +28,8 @@ app.use(passport.session());
 require('./routes/authRoutes')(app);
 require('./routes/blogRoutes')(app);
 
-if (['production'].includes(process.env.NODE_ENV)) {
+const { NODE_ENV } = process.env;
+if (NODE_ENV in ['ci', 'production']) {
   app.use(express.static('client/build'));
 
   const path = require('path');
