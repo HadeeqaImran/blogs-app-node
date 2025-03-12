@@ -51,3 +51,19 @@ Chromium is an open source browser that google uses (open source condebas used) 
 3. How do we simulate logging in as a user when we are using Google OAuth
 
 ### PS: Puppeteer is what runs the chromium browser for us.
+Using this we can instantiate a new browser windiow. This object has a function tied to which can give us a browser tab (referred to as a page).
+
+.test.js extension - becasue jest is going to look for files with this extension to consider them as having test cases.
+
+### The testing process
+Launch Chrome -> Navigate to app -> click something on screen -> use a dom selector to retireve the content of an element ->
+Write assertions to make sure the content is correct
+
+### Bypassing OAuth Flow
+We cannont write code to automate google account selection to log in because when a lot of tests are run, google locks us out with a captcha
+
+#### Make a secret route on the server which logs in our application
+It is security risk
+
+#### When tests are running, disable authentication requirement
+Server and our test suite are two different processes so we cannot easily change the server code when tests rae running
