@@ -34,23 +34,33 @@ test('Clicking login starts oauth flow', async () => {
 
 
 // test.only is used to run only this test.
-test('When signed in, shows logout button', async () => {
+test.only('When signed in, shows logout button', async () => {
 
     const user = await userFactory();
+    console.log("user", user)
     const { session, sig } = sessionFactory(user);
+    console.log("type", typeof(session), session)
 
-    // You have to goto the page before setting the cookie ideally but here we have a beforeEach function that does that for us.
-    await page.setCookie({ name: 'session', value: session });
-    await page.setCookie({ name: 'session.sig', value: sig });
-    // You can see these cookies in the Application tab in the browser.
-    await page.goto('http://localhost:3000/'); // We need to refresh the page to see the changes due to cookie setting.
-    
-    // Because this runs so fast that the page isn't even loaded yet and jest comes to this line, it does not find the correct element. To avoid this we need to slow the execution down a bit.
-    await page.waitForSelector('a[href="/auth/logout"]');
+    // // You have to goto the page before setting the cookie ideally but here we have a beforeEach function that does that for us.
+    // await page.setCookie({ name: 'session', value: session });
+    // await page.setCookie({ name: 'session.sig', value: sig });
+    // console.log("1")
+    // // You can see these cookies in the Application tab in the browser.
+    // await page.goto('http://localhost:3000/');; // We need to refresh the page to see the changes due to cookie setting.
+    // console.log("2")
+    // console.log("cookies", await page.cookies())
+    // // Because this runs so fast that the page isn't even loaded yet and jest comes to this line, it does not find the correct element. To avoid this we need to slow the execution down a bit.
+    // await page.waitForSelector('a[href="/auth/logout"]', { visible: true });
+    // console.log("3")
+// Ensure session and sig are strings
+await page.setCookie({ name: 'session', value: String(session) });
+await page.setCookie({ name: 'session.sig', value: String(sig) });
+await page.goto('http://localhost:3000/');
+await page.waitFor('a[href="/auth/logout"]');
 
     const text = await page.$eval('a[href="/auth/logout"]', element => element.innerHTML);
     expect(text).toEqual('Logout');
-});
+}, 200000);
 
 // Next we need to find a way to log in, because any of the other tests need a logged in user.
 

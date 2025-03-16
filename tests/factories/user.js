@@ -1,9 +1,16 @@
 const mongoose = require('mongoose');
+require('../../models/User');
 const User = mongoose.model('User');
 
 module.exports = () => {
-    console.log('User to mongo');
-    return new User({}).save();
+    try {
+        const user = new User({});
+        user.save();
+        return user;
+    } catch (error) {
+        console.error("Error creating user:", error);
+        throw error;
+    }
 }
 
 // When we run jest it looks for only the test.js files in the project and runs them separate from the server code. 
