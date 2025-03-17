@@ -53,14 +53,15 @@ test.only('When signed in, shows logout button', async () => {
     // await page.waitForSelector('a[href="/auth/logout"]', { visible: true });
     // console.log("3")
 // Ensure session and sig are strings
-await page.setCookie({ name: 'session', value: String(session) });
-await page.setCookie({ name: 'session.sig', value: String(sig) });
-await page.goto('http://localhost:3000/');
-await page.waitFor('a[href="/auth/logout"]');
+    await page.setCookie({ name: 'session', value: String(session) });
+    await page.setCookie({ name: 'session.sig', value: String(sig) });
+    console.log("refresh")
+    await page.goto('http://localhost:3000/blogs');
+    await page.waitForSelector('a[href="/auth/logout"]');
 
     const text = await page.$eval('a[href="/auth/logout"]', element => element.innerHTML);
     expect(text).toEqual('Logout');
-}, 200000);
+}, 20000); // This is the timeout for the test. If the test does not complete in 10 seconds, it will fail.
 
 // Next we need to find a way to log in, because any of the other tests need a logged in user.
 
