@@ -43,28 +43,41 @@ class CustomPage {
     }
 
     get(path) {
-        return this.page.evaluate(_path => {
-            return fetch(_path, {
+        return this.page.evaluate(async (_path) => {
+            const response = await fetch(_path, {
                 method: 'GET',
                 credentials: 'same-origin',
                 headers: {
                     'Content-Type': 'application/json'
                 }
-            }).then(res => res.json());
+            })
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) {
+                return response.json();
+            } else {
+                return response.text();
+            };
         }, path);
     }
 
     post(path, data) {
-        return this.page.evaluate((_path, _data) => {
-            return fetch(_path, {
+        return this.page.evaluate(async (_path, _data) => { // We are going to stringify this function to pass over to the chromium instance for execution.
+            // After making it a string you cannot acccess the path variable being passed inside the post method (because there is no closure scope - exists only for functions)
+            const response = await fetch(_path, {
                 method: 'POST',
                 credentials: 'same-origin',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(_data)
-            }).then(res => res.json());
-        }, path, data);
+            })
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) {
+                return response.json();
+            } else {
+                return response.text();
+            };
+        }, path, data); // These path and data are the argumnets being passed to the function.
     }
 
     execRequests(actions) {

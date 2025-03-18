@@ -5,9 +5,7 @@ const User = mongoose.model('User');
 module.exports = async () => {
     try {
         const user = new User({});
-        console.log("user", user)
         await user.save();
-        console.log("user 2", user)
         return user;
     } catch (error) {
         console.error("Error creating user:", error);
