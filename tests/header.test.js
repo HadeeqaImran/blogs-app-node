@@ -1,6 +1,5 @@
 // Because if will test the elements inside my header
-const sessionFactory = require('./factories/session');
-const userFactory = require('./factories/user');
+
 const Page = require('./helpers/page');
 
 let page;
@@ -30,26 +29,10 @@ test('Clicking login starts oauth flow', async () => {
 
 // test.only is used to run only this test.
 test('When signed in, shows logout button', async () => {
-
-    const user = await userFactory();
-    console.log("user", user)
-    const { session, sig } = sessionFactory(user);
-    console.log("type", typeof(session), session)
-    await page.setCookie({
-        name: 'session',
-        value: String(session),
-        url: 'http://localhost:3000' // Ensure it's properly associated
-    });
-    await page.setCookie({
-        name: 'session.sig',
-        value: String(sig),
-        url: 'http://localhost:3000'
-    });
-    await page.goto('http://localhost:3000');
-    await page.waitForSelector('a[href="/auth/logout"]');
-
+    await page.login();
     const text = await page.$eval('a[href="/auth/logout"]', element => element.innerHTML);
     expect(text).toEqual('Logout');
+
 }, 20000); // This is the timeout for the test. If the test does not complete in 10 seconds, it will fail.
 
 // Next we need to find a way to log in, because any of the other tests need a logged in user.
