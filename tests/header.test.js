@@ -1,22 +1,17 @@
 // Because if will test the elements inside my header
-const puppeteer = require('puppeteer');
 const sessionFactory = require('./factories/session');
 const userFactory = require('./factories/user');
+const Page = require('./helpers/page');
 
-let browser, page;
-
+let page;
 // It only runs before each test IN THIS FILE So if I want to generate an authenticated user, doing so in this statement will get me to do that on every testing file
 beforeEach(async () => {
-    browser = await puppeteer.launch({
-        executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-        headless: false,
-    });
-    page = await browser.newPage();
+    page = await Page.build();
     await page.goto('http://localhost:3000/');
 })
 
 afterEach(async() => {
-    await browser.close();
+    await page.close();
 });
 
 test('Header has the correct text', async () => {
@@ -34,29 +29,23 @@ test('Clicking login starts oauth flow', async () => {
 
 
 // test.only is used to run only this test.
-test.only('When signed in, shows logout button', async () => {
+test('When signed in, shows logout button', async () => {
 
     const user = await userFactory();
     console.log("user", user)
     const { session, sig } = sessionFactory(user);
     console.log("type", typeof(session), session)
-
-    // // You have to goto the page before setting the cookie ideally but here we have a beforeEach function that does that for us.
-    // await page.setCookie({ name: 'session', value: session });
-    // await page.setCookie({ name: 'session.sig', value: sig });
-    // console.log("1")
-    // // You can see these cookies in the Application tab in the browser.
-    // await page.goto('http://localhost:3000/');; // We need to refresh the page to see the changes due to cookie setting.
-    // console.log("2")
-    // console.log("cookies", await page.cookies())
-    // // Because this runs so fast that the page isn't even loaded yet and jest comes to this line, it does not find the correct element. To avoid this we need to slow the execution down a bit.
-    // await page.waitForSelector('a[href="/auth/logout"]', { visible: true });
-    // console.log("3")
-// Ensure session and sig are strings
-    await page.setCookie({ name: 'session', value: String(session) });
-    await page.setCookie({ name: 'session.sig', value: String(sig) });
-    console.log("refresh")
-    await page.goto('http://localhost:3000/blogs');
+    await page.setCookie({
+        name: 'session',
+        value: String(session),
+        url: 'http://localhost:3000' // Ensure it's properly associated
+    });
+    await page.setCookie({
+        name: 'session.sig',
+        value: String(sig),
+        url: 'http://localhost:3000'
+    });
+    await page.goto('http://localhost:3000');
     await page.waitForSelector('a[href="/auth/logout"]');
 
     const text = await page.$eval('a[href="/auth/logout"]', element => element.innerHTML);
