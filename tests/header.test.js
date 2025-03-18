@@ -1,8 +1,7 @@
-// Because if will test the elements inside my header
-
 const Page = require('./helpers/page');
 
 let page;
+
 // It only runs before each test IN THIS FILE So if I want to generate an authenticated user, doing so in this statement will get me to do that on every testing file
 beforeEach(async () => {
     page = await Page.build();
@@ -14,9 +13,7 @@ afterEach(async() => {
 });
 
 test('Header has the correct text', async () => {
-    const text = await page.$eval('a.brand-logo', element => element.innerHTML); // This is not being executed inside the jest suite. It is a separate process.
-    // Puppeteer serializes our arrow function to string and it is sent to chromium instance from where it is converted to a function and executed, the result it afterwards sent back.
-    // $eval is a normal variable.
+    const text = await page.getContentsOf('a.brand-logo'); 
     expect(text).toEqual('Blogster');
 })
 
@@ -30,12 +27,10 @@ test('Clicking login starts oauth flow', async () => {
 // test.only is used to run only this test.
 test('When signed in, shows logout button', async () => {
     await page.login();
-    const text = await page.$eval('a[href="/auth/logout"]', element => element.innerHTML);
+    const text = await page.getContentsOf('a[href="/auth/logout"]');
     expect(text).toEqual('Logout');
 
-}, 20000); // This is the timeout for the test. If the test does not complete in 10 seconds, it will fail.
-
-// Next we need to find a way to log in, because any of the other tests need a logged in user.
+}); // This is the timeout for the test. If the test does not complete in 10 seconds, it will fail.
 
 
 // Function that starts running the tests. 

@@ -5,7 +5,7 @@ const userFactory = require('../factories/user');
 class CustomPage {
     static async build() {
         const browser = await puppeteer.launch({
-            headless: false,
+            headless: true,
             // args: ['--no-sandbox']
         });
         const page = await browser.newPage();
@@ -32,12 +32,14 @@ class CustomPage {
 
         await this.page.setCookie({ name: 'session', value: session });
         await this.page.setCookie({ name: 'session.sig', value: sig });
-        await this.page.goto('http://localhost:3000');
+        await this.page.goto('http://localhost:3000/blogs');
         await this.page.waitForSelector('a[href="/auth/logout"]');
     }
 
     async getContentsOf(selector) {
-        return this.page.$eval(selector, el => el.innerHTML);
+        return this.page.$eval(selector, elemennt => elemennt.innerHTML);// This is not being executed inside the jest suite. It is a separate process.
+        // Puppeteer serializes our arrow function to string and it is sent to chromium instance from where it is converted to a function and executed, the result it afterwards sent back.
+        // $eval is a normal variable.
     }
 
     get(path) {
