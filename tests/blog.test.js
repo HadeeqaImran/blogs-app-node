@@ -66,13 +66,35 @@ describe('When logged in', () => {
 })
 
 describe('When user is not logged in', () => {
-    test('User cannot create blog posts', async () => {
-        const result = await page.post('/api/blogs', { title: 'My Title', content: 'My Content' });
-        expect(result).toEqual({"error": "You must log in!"})
+
+    // We can get all the actions that need to be performed in the test suite and then run them in a loop. Collect all the results in an array and then check them to be equal to the error
+    const actions = [
+        {
+            method: 'get',
+            path: '/api/blogs',
+        },
+        {
+            method: 'post',
+            path: '/api/blogs',
+            data: { title: 'My Title', content: 'My Content' }
+        }
+    ]
+    test('Blog related actions are prohibited', async () => {
+        const results = await page.execRequests(actions);
+        for (let result of results) {
+            expect(result).toEqual({"error": "You must log in!"})
+        }
     })
 
-    test('User cannot get a list of posts', async () => {
-        const result = await page.get('/api/blogs')
-        expect(result).toEqual({"error": "You must log in!"})
-    })
+    // These tests call the get and post methods from the page object and pass in the path ---------
+    // test('User cannot create blog posts', async () => {
+    //     const result = await page.post('/api/blogs', { title: 'My Title', content: 'My Content' });
+    //     expect(result).toEqual({"error": "You must log in!"})
+    // })
+
+    // test('User cannot get a list of posts', async () => {
+    //     const result = await page.get('/api/blogs')
+    //     expect(result).toEqual({"error": "You must log in!"})
+    // })
+
 })
