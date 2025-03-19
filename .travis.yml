@@ -5,9 +5,8 @@ dist: trusty # Ubuntu 14.04 vitual machine tailored OS
 services:
   - mongodb
   - redis-server # To start up instances of these two on the VM
-env:
-  - NODE_ENV=ci
-  - PORT=3000
+env: # These serve as env configurations for the VM
+  - NODE_ENV=ci PORT=3000
 cache: 
   directories:
     - node_modules # It keeps the old node_modules folder but in next step when npm install is run, any changes made to these are reflected as well. Advantage: npm install runs much quicker. (Installs modules for the first time because they are in .gitignore)
