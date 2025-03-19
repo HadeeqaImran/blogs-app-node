@@ -67,3 +67,12 @@ It is security risk
 
 #### When tests are running, disable authentication requirement
 Server and our test suite are two different processes so we cannot easily change the server code when tests rae running
+
+
+# Continuous Integration
+Process to merge all changes to a single branch
+#### CI Server
+A server that runs automated tests (can be automated tests like our project, linting or unit tests) on the codebase to ensure the changes haven't broken anything and are okay to merge.
+
+# What is YAML File
+Simplified way of writing plain json data. writing key value pairs as strings

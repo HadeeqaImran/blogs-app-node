@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 const redis = require('redis');
-const redisUrl = 'redis://127.0.0.1:6379';
-const client = redis.createClient(redisUrl);
 const util = require('util');
+const keys = require('../config/keys');
+const client = redis.createClient(keys.redisUrl);
 
 // Every query in our system inherits from Query.prototype so we can tie a function cache to it to selectively cache queries and have good code readability.
 mongoose.Query.prototype.cache = function(options={}) {

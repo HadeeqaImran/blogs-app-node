@@ -1,0 +1,26 @@
+language: node_js
+node_js:
+  - 18.20.4
+dist: trusty # Ubuntu 14.04 vitual machine tailored OS
+services:
+  - mongodb
+  - redis-server # To start up instances of these two on the VM
+env:
+  - NODE_ENV=ci
+  - PORT=3000
+cache: 
+  directories:
+    - node_modules # It keeps the old node_modules folder but in next step when npm install is run, any changes made to these are reflected as well. Advantage: npm install runs much quicker. (Installs modules for the first time because they are in .gitignore)
+    - client/node_modules
+install: # Anything that needs to be done on the command line before starting the project
+  - npm install
+  - npm run build
+  # The build script in our root package.json file is going to run the build script in the client package.json file.
+  # In dev, the client app is served on 5000 and the BE is served on 3000. But in prod because we build our project, the entire app is running on 3000.
+script:
+  - nohup npm run start &
+  # If the shell is closed don't kill the process started with this command. (No Hang Up)
+  # & Run the command in the background (in a subshell) so that other things can still be run on the main shell
+  - sleep 3 # In real world, so that the test suite does not try to access the server before it is ready, since it takes sometime to be ready, we wait for 3 seconds
+  - npm run test
+# End: .travis.yml
