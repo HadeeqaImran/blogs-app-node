@@ -6,7 +6,8 @@ class CustomPage {
     static async build() {
         const browser = await puppeteer.launch({
             headless: true,
-            // args: ['--no-sandbox']
+            args: ['--no-sandbox']
+            // We do not have to worry about the virtual machine settings, it dramatically increases the time of tests execution.
         });
         const page = await browser.newPage();
         const customPage = new CustomPage(page);

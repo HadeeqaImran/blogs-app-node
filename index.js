@@ -30,7 +30,8 @@ require('./routes/blogRoutes')(app);
 
 const { NODE_ENV } = process.env;
 if (NODE_ENV in ['ci', 'production']) {
-  app.use(express.static('client/build'));
+  // All the client side application files after npm run build are placed in this directory
+  app.use(express.static('client/build')); 
 
   const path = require('path');
   app.get('*', (req, res) => {
@@ -42,3 +43,7 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Listening on port`, PORT);
 });
+
+// In dev env, we have a react server running that serves the client side code,
+// but for prod and ci we need to create builds that run on the virtual machine or server
+// Therefore, in these cases we need to add to serve the build from client/build directory
