@@ -2,9 +2,6 @@ language: node_js
 node_js:
   - 18.20.4
 dist: trusty # Ubuntu 14.04 vitual machine tailored OS
-branches:
-  only:
-    - continuous-integration
 services:
   - mongodb
   - redis-server # To start up instances of these two on the VM
