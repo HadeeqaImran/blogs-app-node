@@ -78,3 +78,4 @@ A server that runs automated tests (can be automated tests like our project, lin
 Simplified way of writing plain json data. writing key value pairs as strings
 
 # Changed to see if a build is triggered? 
+Making changes in README file to check if a build is triggered
