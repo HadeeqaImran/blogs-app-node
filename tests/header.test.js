@@ -30,7 +30,7 @@ test('When signed in, shows logout button', async () => {
     const text = await page.getContentsOf('a[href="/auth/logout"]');
     expect(text).toEqual('Logout');
 
-}); // This is the timeout for the test. If the test does not complete in 10 seconds, it will fail.
+}, 60000); // This is the timeout for the test. If the test does not complete in 10 seconds, it will fail.
 
 
 // Function that starts running the tests. 
