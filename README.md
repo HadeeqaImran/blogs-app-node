@@ -78,3 +78,31 @@ A server that runs automated tests (can be automated tests like our project, lin
 Simplified way of writing plain json data. writing key value pairs as strings
 
 # Changed to see if a build is triggered? 
+
+# Image Upload
+Where we store those images?
+How can we access those stored images?
+How can we map an image with a blog post?
+
+# For interview might want to check other possible solutions and then their problems
+
+# Solution 1: MongoDB
+Why do we not store it in MongoDb?
+It is very easy to store an image in MongoDb and the mapping to blog posts is easy too. BUT it is an expensive solution because you have to pay for storage on mongodb cloud
+
+# Solution 2: Hardrive tied to a server.
+Whenever we deploy our application to cloud (AWS, Heroku, Digital Ocean), we get a hard drive associated to it. We can place images in that hard drive. (Vast majority of sources advocate for this) BUT
+one express server gets one hard drive associated with it. The problem starts to arise when we have multiple servers such as when we start to add load balancing to our server - there are multiple instances of the same server with each having a seprarte hard drive. If our image is in instance A and the request of the intended user goes to instance B then that user cannot access that image anymore.
+
+# Solution 3: Outside Data Store
+We can make express app upload our image to Amazon S3, Azure File Storage or Google Cloud Storage (mage for muli media storage).
+Cheap storage resources.
+
+## Rules for uploading images
+1. You have to be logged in
+2. You have to add validation at react and api level (do it for both)
+3. The uploaded image needs to be tied to a blog post
+4. Allow only image type file.
+
+# Approach: 
+A 2 hop approach with first the file being streamed to the hard drive with our express server and then from hard drive to S3
