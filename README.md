@@ -105,4 +105,12 @@ Cheap storage resources.
 4. Allow only image type file.
 
 # Approach: 
-A 2 hop approach with first the file being streamed to the hard drive with our express server and then from hard drive to S3
+A 2 hop approach with first the file being streamed to the hard drive with our express server and then from hard drive to S3.
+Not the best approach and has some issues associated with it: Our express Api is involved in the upload, our server will have to allocate some resources to the upload processs. It makes handling uploads easier but the approach isn't as scalable becasue a lot of resources are being consumed and they are money instensive.
+## A more scalable version which does not invlove the server in image upload process
+![alt text](<Screenshot 2025-03-21 at 1.04.17 pm.png>)
+
+## How is uploading images to S3 secure?
+
+## Bucket
+A bucket is a unit of storage inside of S3. These can be thought of as hard drives or folders. These buckets limit access to themselves as tightly as they can. When we create a bucket, then we can limit its access to our API which has. We can stop anyone from accessing the bucket at all. But when we get a presigned url, then our server can access the bucket for just that particular exactly one file upload. 
