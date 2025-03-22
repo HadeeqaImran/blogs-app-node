@@ -13,8 +13,16 @@ export const handleToken = token => async dispatch => {
   dispatch({ type: FETCH_USER, payload: res.data });
 };
 
-export const submitBlog = (values, history) => async dispatch => {
-  const res = await axios.post('/api/blogs', values);
+export const submitBlog = (values, file, history) => async dispatch => {
+  const uploadConfig = await axios.get('/api/upload');
+
+  await axios.put(uploadConfig.data.url, file, {
+    headers: {
+      'Content-Type': file.type
+    }
+  });
+  const res = await axios.post('/api/blogs', {...values, imageUrl: uploadConfig.data.key});
+  // We store only the key because we want to store something that is particular to our application level logic. We don't know when we might have to rename the bucket for example.
 
   history.push('/blogs');
   dispatch({ type: FETCH_BLOG, payload: res.data });

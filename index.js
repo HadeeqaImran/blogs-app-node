@@ -27,6 +27,7 @@ app.use(passport.session());
 
 require('./routes/authRoutes')(app);
 require('./routes/blogRoutes')(app);
+require('./routes/uploadRoutes')(app); // The first require statement returns the arrow function inside the uploadRoutes, the second one is for invoking the function.
 
 const { NODE_ENV } = process.env;
 if (NODE_ENV in ['ci', 'production']) {

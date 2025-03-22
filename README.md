@@ -114,3 +114,7 @@ Not the best approach and has some issues associated with it: Our express Api is
 
 ## Bucket
 A bucket is a unit of storage inside of S3. These can be thought of as hard drives or folders. These buckets limit access to themselves as tightly as they can. When we create a bucket, then we can limit its access to our API which has. We can stop anyone from accessing the bucket at all. But when we get a presigned url, then our server can access the bucket for just that particular exactly one file upload. 
+
+# Creating the S3 bucket
+1. Using Amazon's IAM (Identity Access Management) we are going to generate a set of credentials which can only be used with our S3 account and that too with only our bucket for the project (no other services privided by Amazon.)
+
